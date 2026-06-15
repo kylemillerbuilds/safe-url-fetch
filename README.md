@@ -2,6 +2,10 @@
 
 Fetch a user-supplied URL on your server without opening an SSRF hole. One small Python module, no list of "bad IPs" to maintain, and a test suite that runs with zero network. Every check exists because skipping it is how internal systems get reached from the outside.
 
+<p align="center">
+  <img src="diagram.svg" alt="How safe-url-fetch judges a URL before the server connects" width="840">
+</p>
+
 ## The story
 
 A SaaS I run lets a user paste their website so the app can grab their logo and brand color. The instant a server fetches a URL a user typed, that fetch becomes a weapon. Point it at `http://169.254.169.254/` on a cloud box and it reads the instance credentials. Point it at `http://localhost:6379` and it talks to the internal Redis. Point it at `http://10.0.0.5/admin` and it reaches a neighbor on the private network. The user never sees those addresses. The server does the connecting, so the server's trust is what gets spent.
